@@ -5,19 +5,32 @@ public abstract class ISolver {
     static int MAZE_Y_SIZE;
     static final int BLOCK = 0;
     static final int ROAD = 1;
-    static final int START = 2;
-    static final int END = 3;
+    static final int ENTRY = 2;
+    static final int EXIT = 3;
     static final int[][] DIRECTIONS = { {0, 1}, {1, 0}, {0, -1}, {-1, 0} };
 
-    abstract Boolean solveMaze(int maze[][]);
+    int maze[][];
+    int visit[][];
+    int sol[][];
+    Coordinate entryPoint;
 
-    int[] findStartingPoint(int maze[][]) {
-        int result[] = new int[2];
+    public ISolver(int maze[][]) {
+        this.maze = maze;
+        MAZE_X_SIZE = maze.length;
+        MAZE_Y_SIZE = maze[0].length;
+        this.visit = new int[MAZE_X_SIZE][MAZE_Y_SIZE];
+        this.sol = new int[MAZE_X_SIZE][MAZE_Y_SIZE];
+        this.entryPoint = findEntry(this.maze);
+    }
+
+    abstract Boolean solveMaze();
+
+    Coordinate findEntry(int maze[][]) {
+        Coordinate result;
         for(int x = 0; x < MAZE_X_SIZE; x++) {
             for(int y = 0; y < MAZE_Y_SIZE; y++) {
-                if(maze[x][y] == START) {
-                    result[0] = x;
-                    result[1] = y;
+                if(maze[x][y] == ENTRY) {
+                    result = new Coordinate(x, y);
                     return result;
                 }
             }
@@ -29,12 +42,12 @@ public abstract class ISolver {
         return (x >= 0 && x < MAZE_X_SIZE && y >= 0 && y < MAZE_Y_SIZE);
     }
 
-    Boolean isVisited(int x, int y, int sol[][]) {
-        return sol[x][y] == 1;
+    Boolean isVisited(int x, int y) {
+        return this.visit[x][y] == 1;
     }
 
-    Boolean isRoad(int maze[][], int x, int y) {
-        return maze[x][y] != BLOCK;
+    Boolean isRoad(int x, int y) {
+        return this.maze[x][y] != BLOCK;
     }
 
     void printSolution(int sol[][]) {

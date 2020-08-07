@@ -1,47 +1,37 @@
 package com.study;
 
 public class DfsSolver extends ISolver {
-    public Boolean solveMaze(int maze[][]) {
-        MAZE_X_SIZE = maze.length;
-        MAZE_Y_SIZE = maze[0].length;
+    public DfsSolver(int maze[][]) {
+        super(maze);
+    }
 
-        int startX = 0;
-        int startY = 0;
-        int sol[][] = new int[MAZE_X_SIZE][MAZE_Y_SIZE];
-
-        int[] startingPoint = findStartingPoint(maze);
-        if(startingPoint == null) {
-            return false;
-        }
-        startX = startingPoint[0];
-        startY = startingPoint[1];
-
-        if (!solveMazeCore(maze, startX, startY, sol)) {
+    public Boolean solveMaze() {
+        if (!solveMazeCore(entryPoint.getX(), entryPoint.getY())) {
             System.out.print("Solution doesn't exist");
             return false;
         }
 
+        sol = visit;
         printSolution(sol);
         return true;
     }
 
-    Boolean solveMazeCore(int maze[][], int x, int y, int sol[][]) {
-        if(!isValidLocation(x, y) || !isRoad(maze, x, y) || isVisited(x, y, sol)) {
+    Boolean solveMazeCore(int x, int y) {
+        if(!isValidLocation(x, y) || !isRoad(x, y) || isVisited(x, y)) {
             return false;
         }
 
-        if (maze[x][y] == END) {
-            sol[x][y] = 1;
+        visit[x][y] = 1;
+        if (maze[x][y] == EXIT) {
             return true;
         }
 
-        sol[x][y] = 1;
         for(int[] dir : DIRECTIONS) {
-            if(solveMazeCore(maze, x + dir[0], y + dir[1], sol))
+            if(solveMazeCore(x + dir[0], y + dir[1]))
                 return true;
         }
 
-        sol[x][y] = 0;
+        visit[x][y] = 0;
         return false;
     }
 }
