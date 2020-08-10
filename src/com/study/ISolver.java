@@ -20,16 +20,16 @@ public abstract class ISolver {
         MAZE_Y_SIZE = maze[0].length;
         this.visit = new int[MAZE_X_SIZE][MAZE_Y_SIZE];
         this.sol = new int[MAZE_X_SIZE][MAZE_Y_SIZE];
-        this.entryPoint = findEntry(this.maze);
+        this.entryPoint = findCoor(ENTRY);
     }
 
-    abstract Boolean solveMaze();
+    abstract void solveMaze();
 
-    Coordinate findEntry(int maze[][]) {
+    Coordinate findCoor(int target) {
         Coordinate result;
         for(int x = 0; x < MAZE_X_SIZE; x++) {
             for(int y = 0; y < MAZE_Y_SIZE; y++) {
-                if(maze[x][y] == ENTRY) {
+                if(this.maze[x][y] == target) {
                     result = new Coordinate(x, y);
                     return result;
                 }

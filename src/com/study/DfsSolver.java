@@ -5,15 +5,14 @@ public class DfsSolver extends ISolver {
         super(maze);
     }
 
-    public Boolean solveMaze() {
+    public void solveMaze() {
         if (!solveMazeCore(entryPoint.getX(), entryPoint.getY())) {
             System.out.print("Solution doesn't exist");
-            return false;
+            return;
         }
 
         sol = visit;
         printSolution(sol);
-        return true;
     }
 
     Boolean solveMazeCore(int x, int y) {

@@ -1,21 +1,19 @@
 package com.study;
 
 import java.util.LinkedList;
-import java.util.List;
 
 public class BfsSolver extends ISolver {
     public BfsSolver(int maze[][]) {
         super(maze);
     }
 
-    public Boolean solveMaze() {
+    public void solveMaze() {
         if (!solveMazeCore()) {
             System.out.print("Solution doesn't exist");
-            return false;
+            return;
         }
 
         printSolution(sol);
-        return true;
     }
 
     public Boolean solveMazeCore() {
